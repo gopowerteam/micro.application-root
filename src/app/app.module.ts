@@ -16,7 +16,20 @@ import {
 
 const SERVICEKEY = new InjectionToken('MY_SERVICE');
 import { AppComponent } from './app.component';
-import { isPlatformServer } from '@angular/common';
+import { isPlatformServer, registerLocaleData } from '@angular/common';
+import { AppRoutingModule } from './app-routing.module';
+import { IconsProviderModule } from './icons-provider.module';
+import { NzLayoutModule } from 'ng-zorro-antd/layout';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NZ_I18N } from 'ng-zorro-antd/i18n';
+import { zh_CN } from 'ng-zorro-antd/i18n';
+import zh from '@angular/common/locales/zh';
+import { LayoutModule } from './layout/layout.module';
+
+registerLocaleData(zh);
 
 const DashboardStartUp = (
   transferState: TransferState,
@@ -34,11 +47,13 @@ const DashboardStartUp = (
   return Promise.resolve();
 };
 @NgModule({
-  declarations: [AppComponent],
   imports: [
     BrowserTransferStateModule,
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
+    BrowserAnimationsModule,
+    LayoutModule,
   ],
+  declarations: [AppComponent],
   providers: [
     {
       provide: APP_INITIALIZER,
@@ -50,6 +65,7 @@ const DashboardStartUp = (
       ],
       multi: true,
     },
+    { provide: NZ_I18N, useValue: zh_CN },
   ],
   bootstrap: [AppComponent],
 })

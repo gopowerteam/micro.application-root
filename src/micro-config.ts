@@ -28,7 +28,6 @@ function genActiveRule(urlList: Array<string>) {
 // });
 
 export const launch = () => {
-  window['navigateToUrl'] = navigateToUrl;
   /**
    * Step2 注册子应用
    */
@@ -38,13 +37,13 @@ export const launch = () => {
       {
         name: 'app01',
         entry: '//localhost:4400',
-        container: '#subapp-viewport',
+        container: '#application-container',
         activeRule: ['/app01'],
       },
       {
         name: 'app02',
         entry: '//localhost:4300',
-        container: '#subapp-viewport',
+        container: '#application-container',
         activeRule: ['/app02'],
       },
     ],
