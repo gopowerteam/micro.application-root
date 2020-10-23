@@ -1,10 +1,16 @@
-import { Component } from '@angular/core';
+import { isPlatformServer } from '@angular/common';
+import { Component, Inject, Optional, PLATFORM_ID } from '@angular/core';
+import {
+  makeStateKey,
+  StateKey,
+  TransferState,
+} from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-root',
+  selector: 'main-app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.less']
+  styleUrls: ['./app.component.less'],
 })
 export class AppComponent {
-  title = 'root-config';
+  title = 'qiankun-angular-angularjs';
 }
