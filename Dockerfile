@@ -13,9 +13,11 @@ FROM node:lts-alpine as app
 
 COPY --from=builder /builder/ /app/
 
+WORKDIR /app
+
 EXPOSE 4000
 
-ENTRYPOINT [ "node", "dist/root-config/server/main.js" ]
+ENTRYPOINT [ "node", "/app/dist/root-config/server/main.js" ]
 
 
 
