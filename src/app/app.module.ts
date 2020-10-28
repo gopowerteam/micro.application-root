@@ -3,70 +3,63 @@ import {
   BrowserTransferStateModule,
   makeStateKey,
   StateKey,
-  TransferState,
-} from '@angular/platform-browser';
-import {
-  APP_INITIALIZER,
-  Inject,
-  InjectionToken,
-  NgModule,
-  Optional,
-  PLATFORM_ID,
-} from '@angular/core';
+  TransferState
+} from '@angular/platform-browser'
+import { APP_INITIALIZER, Inject, NgModule, Optional, PLATFORM_ID } from '@angular/core'
+import { AppComponent } from './app.component'
+import { isPlatformServer, registerLocaleData } from '@angular/common'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { NZ_I18N } from 'ng-zorro-antd/i18n'
+import { zh_CN } from 'ng-zorro-antd/i18n'
+import zh from '@angular/common/locales/zh'
+import { LayoutModule } from './layout/layout.module'
+// import { setup } from '../micro-setup'
 
-const SERVICEKEY = new InjectionToken('MY_SERVICE');
-import { AppComponent } from './app.component';
-import { isPlatformServer, registerLocaleData } from '@angular/common';
-import { AppRoutingModule } from './app-routing.module';
-import { IconsProviderModule } from './icons-provider.module';
-import { NzLayoutModule } from 'ng-zorro-antd/layout';
-import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NZ_I18N } from 'ng-zorro-antd/i18n';
-import { zh_CN } from 'ng-zorro-antd/i18n';
-import zh from '@angular/common/locales/zh';
-import { LayoutModule } from './layout/layout.module';
+// 注册语言
+registerLocaleData(zh)
 
-registerLocaleData(zh);
-
-const DashboardStartUp = (
+/**
+ * 应用启动逻辑
+ * @param transferState
+ * @param platformId
+ * @param SERVICES
+ */
+const ApplicationStartUp = (
   transferState: TransferState,
   platformId: string,
-  MY_SERVICE: string
+  applicationConfig: () => Promise<string>
 ) => async () => {
-  const transferKey: StateKey<string> = makeStateKey<string>('MY_SERVICE');
+  const transferKey: StateKey<string> = makeStateKey<string>('APPLICATION_CONFIG')
   if (isPlatformServer(platformId)) {
-    transferState.set(transferKey, MY_SERVICE);
+    transferState.set(transferKey, await applicationConfig())
   } else {
-    MY_SERVICE = transferState.get<string>(transferKey, '');
-    // 初始化服务列表
+    // 获取配置信息
+    const config = transferState.get<string>(transferKey, '')
+    console.log(config)
+    // 初始化为微服务服务
+    const { setup } = await import('../micro-setup')
+    setup(config)
   }
 
-  return Promise.resolve();
-};
+  return Promise.resolve()
+}
 @NgModule({
   imports: [
     BrowserTransferStateModule,
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
     BrowserAnimationsModule,
-    LayoutModule,
+    LayoutModule
   ],
   declarations: [AppComponent],
   providers: [
     {
       provide: APP_INITIALIZER,
-      useFactory: DashboardStartUp,
-      deps: [
-        TransferState,
-        PLATFORM_ID,
-        [new Optional(), new Inject('MY_SERVICE')],
-      ],
-      multi: true,
+      useFactory: ApplicationStartUp,
+      deps: [TransferState, PLATFORM_ID, [new Optional(), new Inject('APPLICATION_CONFIG')]],
+      multi: true
     },
-    { provide: NZ_I18N, useValue: zh_CN },
+    { provide: NZ_I18N, useValue: zh_CN }
   ],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule {}

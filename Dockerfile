@@ -17,7 +17,7 @@ WORKDIR /app
 
 EXPOSE 4000
 
-ENTRYPOINT [ "node", "/app/dist/root-config/server/main.js" ]
+ENTRYPOINT [ "node", "/app/dist/server/main.js" ]
 
 
 

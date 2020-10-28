@@ -26,9 +26,18 @@ pipeline {
 
       }
     }
+    stage("部署镜像") {
+      steps {
+        script {
+           sh "curl -d '{\"secret_key\":\"${DEPLOY_SECRET}\"}' -H \"Content-type: application/json\" -X POST ${DEPLOY_API}"
+        }
+      }
+    }
   }
   environment {
     CODING_DOCKER_REG_HOST = "${CCI_CURRENT_TEAM}-docker.pkg.${CCI_CURRENT_DOMAIN}"
     CODING_DOCKER_IMAGE_NAME = "${PROJECT_NAME.toLowerCase()}/${DOCKER_REPO_NAME}/${DOCKER_IMAGE_NAME}"
+    DEPLOY_API = "http://39.103.176.179:7070/console/custom/deploy/226e355ef8bc49f788a6e4f060878861"
+    DEPLOY_SECRET = "e5mrycO2"
   }
 }

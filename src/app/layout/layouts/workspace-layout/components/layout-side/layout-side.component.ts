@@ -1,16 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { navigateToUrl } from 'single-spa';
+import { Component } from '@angular/core'
+import { navigateToUrl } from 'single-spa'
 @Component({
   selector: 'app-layout-side',
   templateUrl: './layout-side.component.html',
-  styleUrls: ['./layout-side.component.less'],
+  styleUrls: ['./layout-side.component.less']
 })
-export class LayoutSideComponent implements OnInit {
-  constructor() {}
-
+export class LayoutSideComponent {
   ngOnInit(): void {}
 
   public changeApplication(path) {
-    navigateToUrl(path);
+    console.log(path)
+    navigateToUrl(path)
   }
 }
