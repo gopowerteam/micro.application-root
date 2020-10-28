@@ -7,25 +7,29 @@ import { initGlobalState, registerMicroApps, runAfterFirstMounted, setDefaultMou
 import { navigateToUrl } from 'single-spa'
 
 function generateApplicationConfig(app) {
+  const appPath = app.path && `${app.path}/`
   return {
     name: app.name,
-    entry: `http://${app.host}:${app.port}/${app.name}/`,
+    entry: `http://${app.host}:${app.port}/${appPath}`,
     container: '#application-container',
-    activeRule: `/${app.path}`
+    activeRule: `/${app.name}`
   }
 }
 
-function getAppcationsJSON(services): any[] {
-  try {
-    return JSON.parse(services) || []
-  } catch (ex) {
-    return []
-  }
+function getApplications(services: any[]) {
+  const applications_custom = (JSON.parse(localStorage.getItem('applications_custom')) as any[]) || []
+  return Array.from(new Set([...services, ...applications_custom].map((x) => x.name)))
+    .map((name) => {
+      const app = applications_custom.find((x) => x.name === name) || services.find((x) => x.name === name)
+      return app
+    })
+    .filter((x) => x)
 }
 
 async function registerMicroApplication(services) {
   // 生成应用配置
-  const applications = services.map(generateApplicationConfig)
+  const applications = getApplications(services).map(generateApplicationConfig)
+
   // 注册应用生命周期
   const lifeCycle = {
     beforeLoad: [
@@ -63,11 +67,11 @@ function registerGlobalState(applications) {
     },
     applications
   })
-
-  localStorage.setItem('applications', JSON.stringify(applications))
 }
 
 export const setup = (SERVICES) => {
+  // 存储应用列表
+  localStorage.setItem('applications', JSON.stringify(SERVICES))
   // 注册应用
   registerMicroApplication(SERVICES)
   // 注册数据中心

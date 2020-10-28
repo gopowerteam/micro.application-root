@@ -13,6 +13,8 @@ import { NZ_I18N } from 'ng-zorro-antd/i18n'
 import { zh_CN } from 'ng-zorro-antd/i18n'
 import zh from '@angular/common/locales/zh'
 import { LayoutModule } from './layout/layout.module'
+import { DevToolsComponent } from './components/dev-tools/dev-tools.component'
+import { SharedModule } from './shared/shared.module'
 // import { setup } from '../micro-setup'
 
 // 注册语言
@@ -44,12 +46,13 @@ const ApplicationStartUp = (
 }
 @NgModule({
   imports: [
+    SharedModule,
     BrowserTransferStateModule,
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
     BrowserAnimationsModule,
     LayoutModule
   ],
-  declarations: [AppComponent],
+  declarations: [AppComponent, DevToolsComponent],
   providers: [
     {
       provide: APP_INITIALIZER,

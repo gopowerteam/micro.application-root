@@ -9,10 +9,11 @@ import { NzMenuModule } from 'ng-zorro-antd/menu'
 import { FormsModule } from '@angular/forms'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { LayoutSideComponent } from './layouts/workspace-layout/components/layout-side/layout-side.component'
+import { SharedModule } from '../shared/shared.module'
 
 @NgModule({
   declarations: [LayoutComponent, WorkspaceLayoutComponent, EmptyLayoutComponent, LayoutSideComponent],
-  imports: [CommonModule, IconsProviderModule, NzLayoutModule, NzMenuModule, FormsModule, BrowserAnimationsModule],
+  imports: [SharedModule],
   exports: [LayoutComponent]
 })
 export class LayoutModule {}

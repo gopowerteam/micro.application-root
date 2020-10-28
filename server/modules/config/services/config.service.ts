@@ -5,7 +5,6 @@ export class ConfigService {
   private readonly config
 
   constructor(filePath: string) {
-    console.log(__dirname)
     this.config = readSync(filePath)
   }
 
