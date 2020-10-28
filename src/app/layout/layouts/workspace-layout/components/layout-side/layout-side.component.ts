@@ -11,18 +11,16 @@ export class LayoutSideComponent {
     @Inject(PLATFORM_ID)
     private readonly platformId: any
   ) {}
-  ngOnInit(): void {}
 
-  public changeApplication(path) {
-    console.log(path)
-    navigateToUrl(path)
+  public applications: any[] = []
+
+  ngOnInit(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      this.applications = JSON.parse(localStorage.getItem('applications'))
+    }
   }
 
-  public get applications() {
-    if (isPlatformBrowser(this.platformId)) {
-      return JSON.parse(localStorage.getItem('applications'))
-    } else {
-      return []
-    }
+  public changeApplication(path) {
+    navigateToUrl(path)
   }
 }

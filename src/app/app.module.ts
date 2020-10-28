@@ -35,7 +35,6 @@ const ApplicationStartUp = (
   } else {
     // 获取配置信息
     const config = transferState.get<string>(transferKey, '')
-    console.log(config)
     // 初始化为微服务服务
     const { setup } = await import('../micro-setup')
     setup(config)
