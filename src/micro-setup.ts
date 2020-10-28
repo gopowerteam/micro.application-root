@@ -57,14 +57,14 @@ function registerGlobalState(applications) {
 
   onGlobalStateChange((value, prev) => console.log('[onGlobalStateChange - master]:', value, prev))
 
-  localStorage.setItem('applications', applications)
-
   setGlobalState({
     user: {
       name: ''
     },
     applications
   })
+
+  localStorage.setItem('applications', JSON.stringify(applications))
 }
 
 export const setup = (SERVICES) => {
