@@ -1,22 +1,30 @@
 import { State, Action, StateContext, Selector, createSelector } from '@ngxs/store'
 import { ExtendState } from '../extends'
-import { GetConfigAction, UpdateConfigAction, SaveConfigAction } from '../actions/config.action'
-import { environment } from '../../../environments/environment'
+import {
+  UpdateDefaultApplicationAction,
+  UpdateCustomApplicationAction,
+  UpdateCurrentApplicationAction
+} from '../actions/application.action'
+import { Injectable } from '@angular/core'
+import { UpdateLayoutAction } from '../actions/config.action'
 
+@Injectable()
 @State<any>({
   name: 'config',
-  defaults: null
+  defaults: {
+    layout: 'default'
+  }
 })
 export class ConfigState extends ExtendState {
-  @Action(UpdateConfigAction)
-  public updateConfig<T>(state: StateContext<any>, { config }: UpdateConfigAction) {
-    this.updateState(state, config)
-  }
-
-  @Action(SaveConfigAction)
-  public saveConfig<T>(state: StateContext<any>) {
-    const config = state.getState()
-
-    this.updateState(state, { ready: true })
+  /**
+   * 更新默认应用列表
+   * @param state
+   * @param param1
+   */
+  @Action(UpdateLayoutAction)
+  public updateLayout<T>(state: StateContext<any>, { layout }: UpdateLayoutAction) {
+    this.updateState(state, {
+      layout
+    })
   }
 }

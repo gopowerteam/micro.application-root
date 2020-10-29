@@ -1,6 +1,8 @@
 import { isPlatformBrowser, isPlatformServer } from '@angular/common'
 import { Component, Inject, PLATFORM_ID } from '@angular/core'
+import { Store } from '@ngxs/store'
 import { navigateToUrl } from 'single-spa'
+import { UpdateLayoutAction } from 'src/app/store/actions/config.action'
 @Component({
   selector: 'app-layout-side',
   templateUrl: './layout-side.component.html',
@@ -9,7 +11,8 @@ import { navigateToUrl } from 'single-spa'
 export class LayoutSideComponent {
   constructor(
     @Inject(PLATFORM_ID)
-    private readonly platformId: any
+    private readonly platformId: any,
+    private store: Store
   ) {}
 
   public applications: any[] = []
@@ -21,17 +24,13 @@ export class LayoutSideComponent {
   }
 
   public changeApplication(path) {
-    navigateToUrl(path)
+    this.store.dispatch(new UpdateLayoutAction('workspace'))
+    setTimeout(() => {
+      navigateToUrl(path)
+    })
   }
 
   private applicationConfig() {
-    const applications = JSON.parse(localStorage.getItem('applications'))
-    const applications_custom = (JSON.parse(localStorage.getItem('applications_custom')) as any[]) || []
-    this.applications = Array.from(new Set([...applications, ...applications_custom].map((x) => x.name)))
-      .map((name) => {
-        const app = applications_custom.find((x) => x.name === name) || applications.find((x) => x.name === name)
-        return app
-      })
-      .filter((x) => x)
+    this.applications = this.store.selectSnapshot((state) => state.application.current)
   }
 }

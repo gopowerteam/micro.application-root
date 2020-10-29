@@ -36,6 +36,7 @@ export class CoreModule {
           provide: APP_INITIALIZER,
           useFactory: launchFactory,
           deps: [LaunchService],
+          // deps: [TransferState, PLATFORM_ID, [new Optional(), new Inject('APPLICATION_CONFIG')]],
           multi: true
         },
         {

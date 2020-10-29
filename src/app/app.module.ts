@@ -9,13 +9,12 @@ import { APP_INITIALIZER, Inject, NgModule, Optional, PLATFORM_ID } from '@angul
 import { AppComponent } from './app.component'
 import { isPlatformServer, registerLocaleData } from '@angular/common'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-import { NZ_I18N } from 'ng-zorro-antd/i18n'
-import { zh_CN } from 'ng-zorro-antd/i18n'
-import zh from '@angular/common/locales/zh'
+import { states } from './store'
 import { LayoutModule } from './layout/layout.module'
 import { DevToolsComponent } from './components/dev-tools/dev-tools.component'
 import { SharedModule } from './shared/shared.module'
 import { CoreModule } from './core/core.module'
+import { NgxsModule } from '@ngxs/store'
 
 @NgModule({
   imports: [

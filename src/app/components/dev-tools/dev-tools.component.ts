@@ -1,5 +1,7 @@
 import { isPlatformBrowser } from '@angular/common'
 import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core'
+import { Store } from '@ngxs/store'
+import { UpdateCustomApplicationAction } from 'src/app/store/actions/application.action'
 
 import { environment } from '../../../environments/environment'
 @Component({
@@ -16,7 +18,8 @@ export class DevToolsComponent implements OnInit {
 
   constructor(
     @Inject(PLATFORM_ID)
-    private platformId: string
+    private platformId: string,
+    private store: Store
   ) {}
 
   ngOnInit(): void {
@@ -41,16 +44,12 @@ export class DevToolsComponent implements OnInit {
   }
 
   private getApplicationsConfig() {
-    const applications_consul = (JSON.parse(localStorage.getItem('applications')) as any[]) || []
-    const applications_custom = (JSON.parse(localStorage.getItem('applications_custom')) as any[]) || []
-
-    const applications = new Set([...applications_consul, ...applications_custom].map((x) => x.name))
-
-    this.dataSource = Array.from(applications).map((name) => {
-      const app = applications_custom.find((x) => x.name === name) || applications_consul.find((x) => x.name === name)
-      app.id = app.id || Math.random().toString(32)
-      return app
-    })
+    this.dataSource = this.store
+      .selectSnapshot((state) => state.application.current)
+      .map((app) => ({
+        ...app,
+        id: Math.random().toString(32)
+      }))
   }
 
   public startEdit(id: string): void {
@@ -96,11 +95,11 @@ export class DevToolsComponent implements OnInit {
   }
 
   private updateCustomApplication(data) {
-    const applications = (JSON.parse(localStorage.getItem('applications_custom')) as any[]) || []
-
-    const applications_custom = applications.filter((x) => x.id !== data.id)
     data.menu = JSON.parse(data.menu)
-
-    localStorage.setItem('applications_custom', JSON.stringify([...applications_custom, data]))
+    const customConfig = this.store.selectSnapshot((state) => state.application.custom) || []
+    console.log(customConfig)
+    console.log([...customConfig.filter((x) => x.id !== data.id), data])
+    // 更新应用列表
+    this.store.dispatch(new UpdateCustomApplicationAction([...customConfig.filter((x) => x.id !== data.id), data]))
   }
 }
