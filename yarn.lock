@@ -1287,6 +1287,20 @@
     "@nguniversal/common" "10.1.0"
     tslib "^2.0.0"
 
+"@ngxs/storage-plugin@^3.7.0":
+  version "3.7.0"
+  resolved "https://registry.npm.taobao.org/@ngxs/storage-plugin/download/@ngxs/storage-plugin-3.7.0.tgz#3a0bc75f5dbba17a18e37b69cfde5d470cfceb45"
+  integrity sha1-OgvHX127oXoY43tpz95dRwz860U=
+  dependencies:
+    tslib "^1.9.0"
+
+"@ngxs/store@^3.7.0":
+  version "3.7.0"
+  resolved "https://registry.npm.taobao.org/@ngxs/store/download/@ngxs/store-3.7.0.tgz?cache=0&sync_timestamp=1599633874589&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40ngxs%2Fstore%2Fdownload%2F%40ngxs%2Fstore-3.7.0.tgz#e46387219dae610c685accc119ae42e351afcaa4"
+  integrity sha1-5GOHIZ2uYQxoWszBGa5C41GvyqQ=
+  dependencies:
+    tslib "^1.9.0"
+
 "@nodelib/fs.scandir@2.1.3":
   version "2.1.3"
   resolved "https://registry.npm.taobao.org/@nodelib/fs.scandir/download/@nodelib/fs.scandir-2.1.3.tgz#3a582bdb53804c6ba6d146579c46e52130cf4a3b"
