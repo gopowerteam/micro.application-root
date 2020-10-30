@@ -58,10 +58,15 @@ export class DevToolsComponent implements OnInit {
 
   public cancelEdit(id: string): void {
     const index = this.dataSource.findIndex((item) => item.id === id)
-    this.editSource[id] = {
-      data: { ...this.dataSource[index] },
-      edit: false,
-      create: false
+    if (this.editSource[id].create) {
+      delete this.editSource[id]
+      this.dataSource.splice(index, 1)
+    } else {
+      this.editSource[id] = {
+        data: { ...this.dataSource[index] },
+        edit: false,
+        create: false
+      }
     }
   }
 
