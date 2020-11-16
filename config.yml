@@ -4,6 +4,7 @@ service:
   port: 8010
   tags: ['web']
 consul:
+  address: consul.dev.xbt-dev.top
   host: 39.103.176.179
   port: 10008
   check:

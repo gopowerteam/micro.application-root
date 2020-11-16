@@ -46,7 +46,7 @@ export class GatewayService {
    */
   public deregisterServices(services: { id: string; tags: string[] }[]) {
     // 可以移除的服务Tag
-    const serviceTags = ['api', 'default']
+    const serviceTags = ['web', 'development']
     // 通过Tag查找Service
     const findServiceByTag = (service) => serviceTags.some((tag) => service.tags.includes(tag))
     // 清理服务

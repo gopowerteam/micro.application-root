@@ -3,9 +3,12 @@ import { Module } from '@nestjs/common'
 import { join } from 'path'
 import { AppServerModule } from '../src/main.server'
 import { ApiController } from './controllers/api.controller'
+import { GatewayController } from './controllers/gateway.controller'
 import { ConfigModule } from './modules/config/config.module'
 import { ConsulModule } from './modules/consul/consul.module'
 import { AngularUniversalModule } from './modules/universal/universal.module'
+import { GatewayService } from './services/gateway.service'
+import { ProxyService } from './services/proxy.service'
 
 @Module({
   imports: [
@@ -16,6 +19,7 @@ import { AngularUniversalModule } from './modules/universal/universal.module'
       viewsPath: join(process.cwd(), 'dist/browser')
     })
   ],
-  controllers: [ApiController]
+  providers: [GatewayService, ProxyService],
+  controllers: [ApiController, GatewayController]
 })
 export class AppModule {}
